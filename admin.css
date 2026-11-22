@@ -409,3 +409,4 @@ html::-webkit-scrollbar,body::-webkit-scrollbar,.ad-nav::-webkit-scrollbar,.ad-s
 .dd-pop{animation:adIn .22s ease both}
 .ad-nav button,.ad-side button,.seg button,.dd-btn,.ad-link,.btn{transition:background .35s ease,color .35s ease,border-color .35s ease,transform .2s ease}
 @media (prefers-reduced-motion:reduce){.an-line{stroke-dasharray:none;stroke-dashoffset:0;animation:none}.an-area{animation:none}.ad-anim .ad-main>*,.dd-pop{animation:none}}
+.pt-rules{display:grid;gap:.8rem;margin:.8rem 0}.pt-rule{display:flex;gap:.8rem;align-items:flex-end}.pt-rule label{flex:1;display:grid;gap:.3rem}.pt-rule small{color:var(--muted,#888)}
