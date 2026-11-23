@@ -316,7 +316,7 @@ function forgotView(){
 
 
 /* ---------------- logged-in app ---------------- */
-var NAVI={"analysis": "<path d=\"M4 20V10M10 20V4M16 20v-8M22 20H2\"/>", "feedback": "<path d=\"M4 4h16v12H8l-4 4z\"/>", "points": "<path d=\"M12 3l2.7 5.6 6.1.9-4.4 4.3 1 6.1L12 17l-5.4 2.9 1-6.1L3.2 9.5l6.1-.9z\"/>", "orders": "<path d=\"M6 3h12l2 5v12H4V8z\"/><path d=\"M4 8h16M9 12h6\"/>", "users": "<circle cx=\"9\" cy=\"8\" r=\"3.2\"/><path d=\"M3 20c0-3.6 2.7-6 6-6s6 2.4 6 6\"/><circle cx=\"17\" cy=\"9\" r=\"2.6\"/><path d=\"M16 14.2c3 .1 5 2 5 5.3\"/>", "overview": "<path d=\"M3 11l9-8 9 8v9a1 1 0 01-1 1h-5v-6H9v6H4a1 1 0 01-1-1z\"/>", "content": "<rect x=\"3\" y=\"4\" width=\"18\" height=\"6\" rx=\"1\"/><rect x=\"3\" y=\"14\" width=\"18\" height=\"6\" rx=\"1\"/>", "pages": "<path d=\"M6 3h8l4 4v14H6z\"/><path d=\"M14 3v4h4\"/>", "settings": "<circle cx=\"12\" cy=\"12\" r=\"3\"/><path d=\"M12 2v3M12 19v3M2 12h3M19 12h3M5 5l2 2M17 17l2 2M19 5l-2 2M7 17l-2 2\"/>", "publish": "<path d=\"M12 16V4M7 9l5-5 5 5M4 20h16\"/>", "security": "<rect x=\"5\" y=\"11\" width=\"14\" height=\"9\" rx=\"2\"/><path d=\"M8 11V8a4 4 0 018 0v3\"/>", "admins": "<path d=\"M12 3l8 3v5c0 5-3.4 8.4-8 10-4.6-1.6-8-5-8-10V6z\"/><path d=\"M8.6 12.2l2.4 2.4 4.4-4.8\"/>"};
+var NAVI={"notify": "<path d=\"M6 16V11a6 6 0 1 1 12 0v5l1.5 2h-15z\"/><path d=\"M10 20.5a2 2 0 0 0 4 0\"/>", "analysis": "<path d=\"M4 20V10M10 20V4M16 20v-8M22 20H2\"/>", "feedback": "<path d=\"M4 4h16v12H8l-4 4z\"/>", "points": "<path d=\"M12 3l2.7 5.6 6.1.9-4.4 4.3 1 6.1L12 17l-5.4 2.9 1-6.1L3.2 9.5l6.1-.9z\"/>", "orders": "<path d=\"M6 3h12l2 5v12H4V8z\"/><path d=\"M4 8h16M9 12h6\"/>", "users": "<circle cx=\"9\" cy=\"8\" r=\"3.2\"/><path d=\"M3 20c0-3.6 2.7-6 6-6s6 2.4 6 6\"/><circle cx=\"17\" cy=\"9\" r=\"2.6\"/><path d=\"M16 14.2c3 .1 5 2 5 5.3\"/>", "overview": "<path d=\"M3 11l9-8 9 8v9a1 1 0 01-1 1h-5v-6H9v6H4a1 1 0 01-1-1z\"/>", "content": "<rect x=\"3\" y=\"4\" width=\"18\" height=\"6\" rx=\"1\"/><rect x=\"3\" y=\"14\" width=\"18\" height=\"6\" rx=\"1\"/>", "pages": "<path d=\"M6 3h8l4 4v14H6z\"/><path d=\"M14 3v4h4\"/>", "settings": "<circle cx=\"12\" cy=\"12\" r=\"3\"/><path d=\"M12 2v3M12 19v3M2 12h3M19 12h3M5 5l2 2M17 17l2 2M19 5l-2 2M7 17l-2 2\"/>", "publish": "<path d=\"M12 16V4M7 9l5-5 5 5M4 20h16\"/>", "security": "<rect x=\"5\" y=\"11\" width=\"14\" height=\"9\" rx=\"2\"/><path d=\"M8 11V8a4 4 0 018 0v3\"/>", "admins": "<path d=\"M12 3l8 3v5c0 5-3.4 8.4-8 10-4.6-1.6-8-5-8-10V6z\"/><path d=\"M8.6 12.2l2.4 2.4 4.4-4.8\"/>"};
 
 /* ---------------- users (needs Supabase + supabase-admin.sql and supabase-owner.sql) ---------------- */
 var U={state:'idle',list:[],q:'',open:null,err:'',who:'all',st:'all',sort:'new'};
@@ -405,7 +405,7 @@ function tabUsers(){
 function uAct(p,ok){return p.then(function(){flash(ok);return loadUsersQuiet()},function(e){flash(e.message||'Something went wrong.','err');renderApp()})}
 
 /* ---------------- analysis + orders (need the extra part of supabase-admin.sql) ---------------- */
-var A={days:30,state:'idle',d:null,err:''},O={state:'idle',list:[],err:'',sort:'new',st:'all'},PT={state:'idle',d:null,err:'',view:'codes'};
+var A={days:30,state:'idle',d:null,err:''},O={state:'idle',list:[],err:'',sort:'new',st:'all'},PT={state:'idle',d:null,err:'',view:'codes'},NT={state:'idle',list:[],err:''};
 function pct(c,p){if(!p)return c?'<span class="an-up">&#9650; new</span>':'<span class="an-flat">-</span>';var v=Math.round((c-p)/p*100);return '<span class="'+(v>=0?'an-up':'an-down')+'">'+(v>=0?'&#9650; ':'&#9660; ')+Math.abs(v)+'%</span>'}
 function dur(s){s=Math.round(s||0);var m=Math.floor(s/60);return m+'M '+('0'+(s%60)).slice(-2)+'S'}
 function loadAnalysis(){A.state='loading';renderApp();A.v=null;uApi('admin_visits',{p_days:A.days}).then(function(v){A.v=v;if(A.state==='ready')renderApp()},function(){A.v=false;if(A.state==='ready')renderApp()});uApi('admin_analytics',{p_days:A.days}).then(function(r){A.d=r;A.state='ready';renderApp()},function(e){A.state=(e.status===404?'nosql':'error');A.err=e.message||'';renderApp()})}
@@ -498,6 +498,21 @@ function tabPoints(){
     body='<div class="pt-rules">'+R.map(function(r){return '<div class="pt-rule"><label>'+r[1]+'<input data-pk="'+r[0]+'" value="'+esc(cfg[r[0]]||'')+'" inputmode="decimal"><small>'+r[2]+'</small></label><button class="btn btn-solid btn-sm" type="button" data-act="pt-save" data-k="'+r[0]+'">Save</button></div>'}).join('')+'<p class="ad-muted">A change applies to new codes and new orders only.</p></div>'}
   return h+'<div class="ad-kpis">'+k+'</div><div class="ad-card">'+tabs+body+'<div class="ad-btns" style="justify-content:flex-start"><button class="btn btn-ghost btn-sm" type="button" data-act="pt-refresh">Refresh</button></div></div>';
 }
+/* ---------------- notifications (the bell on the website): post website updates ---------------- */
+function loadNotify(){NT.state='loading';renderApp();uApi('admin_notify_list').then(function(r){NT.list=r||[];NT.state='ready';renderApp()},function(e){NT.state=(e.status===404?'nosql':'error');NT.err=e.message||'';renderApp()})}
+function tabNotify(){
+  var h='<div class="ad-head"><h1>Notifications</h1><p class="ad-muted">Post a website update. Every logged-in user sees it in the bell icon next to their profile. The welcome notice is sent automatically.</p></div>';
+  if(NT.state==='idle'){loadNotify();return h+'<div class="ad-card"><p class="ad-muted">Loading…</p></div>'}
+  if(NT.state==='loading')return h+'<div class="ad-card"><p class="ad-muted">Loading…</p></div>';
+  if(NT.state==='error'&&NT.err==='noauth')return connectCard(h);
+  if(NT.state!=='ready')return h+'<div class="ad-card"><p class="ad-msg warn">'+(NT.state==='nosql'?'Notifications are not installed yet. Run supabase-notifications.sql in the Supabase SQL Editor.':'Could not load. '+esc(NT.err))+'</p><div class="ad-btns" style="justify-content:flex-start"><button class="btn btn-solid btn-sm" type="button" data-act="nt-refresh">Try again</button></div></div>';
+  var dt=function(v){try{return new Date(v).toLocaleString(undefined,{day:'numeric',month:'short',year:'numeric',hour:'2-digit',minute:'2-digit'})}catch(e){return ''}};
+  return h+'<div class="ad-card"><h3>New update</h3><div class="nt-form"><label class="f">Title<input id="nt-t" maxlength="80" autocomplete="off" placeholder="For example: Points are live"></label>'+
+    '<label class="f">Message<textarea id="nt-b" maxlength="400" rows="3" placeholder="A short message (up to 400 characters)"></textarea></label>'+
+    '<label class="f">Link (optional)<input id="nt-l" maxlength="200" autocomplete="off" placeholder="points, or https://..."></label>'+
+    '<div class="ad-btns" style="justify-content:flex-start"><button class="btn btn-solid btn-sm" type="button" data-act="nt-send">Send to everyone</button></div></div></div>'+
+    '<div class="ad-card"><h3>Sent updates</h3>'+(NT.list.length?'<div class="ad-tablewrap"><table class="ad-table u-table"><thead><tr><th>Update</th><th>Link</th><th>Sent</th><th></th></tr></thead><tbody>'+NT.list.map(function(n){return '<tr><td><b>'+esc(n.title)+'</b><span>'+esc(n.body||'')+'</span></td><td>'+esc(n.link||'-')+'</td><td>'+esc(dt(n.created_at))+'</td><td><button class="btn btn-ghost btn-sm" type="button" data-act="nt-del" data-id="'+n.id+'">Delete</button></td></tr>'}).join('')+'</tbody></table></div>':'<p class="ad-muted">Nothing sent yet.</p>')+'</div>';
+}
 function tabOrders(){
   var h='<div class="ad-head"><h1>Orders</h1><p class="ad-muted">Orders placed from the Buy now page. Mark them paid once you have checked the payment.</p></div>';
   if(O.state==='idle'){loadOrders();return h+'<div class="ad-card"><p class="ad-muted">Loading…</p></div>'}
@@ -572,7 +587,7 @@ function fbMenu(btn,id){
     uApi('admin_set_feedback',{p_id:id,p_status:v}).then(function(){loadFeedback(true)},function(e){flash(e.message||'Failed.','err');renderApp()});
   });
 }
-var TABS=[['overview','Overview'],['analysis','Analysis'],['orders','Orders'],['points','Points'],['feedback','Feedback'],['content','Content'],['pages','Pages and sections'],['users','Users'],['settings','Settings'],['publish','Publish'],['admins','Owner and admins'],['security','Security']];
+var TABS=[['overview','Overview'],['analysis','Analysis'],['orders','Orders'],['points','Points'],['notify','Notifications'],['feedback','Feedback'],['content','Content'],['pages','Pages and sections'],['users','Users'],['settings','Settings'],['publish','Publish'],['admins','Owner and admins'],['security','Security']];
 var animT=0;
 /* fade the old view out, then draw the new one and let it fade in (about 0.8 s in total) */
 function smooth(fn){
@@ -596,7 +611,7 @@ function renderApp(){
   var nav='<aside class="ad-nav" aria-label="Admin sections"><div class="ad-brand"><b>SK</b><span>Control</span></div>'+
     '<p class="ad-me">'+esc(ME.is_owner?'SkillsKnowledge':(ME.name||'Admin'))+VB+'<em>'+(ME.is_owner?'Owner':'Admin')+'</em></p>'+
     TABS.map(function(t){return '<button type="button" data-tab="'+t[0]+'"'+(ui.tab===t[0]?' aria-current="true"':'')+'><svg viewBox="0 0 24 24" aria-hidden="true">'+NAVI[t[0]]+'</svg><span>'+t[1]+'</span>'+(t[0]==='publish'&&dirty()?'<em>•</em>':'')+'</button>'}).join('')+'</aside>';
-  var h=nav+'<div class="ad-main">'+msgHtml()+({overview:tabOverview,content:tabContent,pages:tabPages,users:tabUsers,analysis:tabAnalysis,orders:tabOrders,points:tabPoints,feedback:tabFeedback,settings:tabSettings,publish:tabPublish,admins:tabAdmins,security:tabSecurity})[ui.tab]()+'</div>';
+  var h=nav+'<div class="ad-main">'+msgHtml()+({overview:tabOverview,content:tabContent,pages:tabPages,users:tabUsers,analysis:tabAnalysis,orders:tabOrders,points:tabPoints,notify:tabNotify,feedback:tabFeedback,settings:tabSettings,publish:tabPublish,admins:tabAdmins,security:tabSecurity})[ui.tab]()+'</div>';
   app.innerHTML='<div class="ad-shell">'+h+'</div>';
   enhance(app);
   if(ui.tab==='security'&&ui.chgOpen&&!ui.setup){var host=$('#chg-host');if(host)setupForm(host,true)}
@@ -846,6 +861,11 @@ function onClick(e){
   if(a==='u-refresh'){loadUsers();return}
   if(a==='a-refresh'){loadAnalysis();return}
   if(a==='o-refresh'){loadOrders();return}
+  if(a==='nt-refresh'){loadNotify();return}
+  if(a==='nt-send'){var tt=(document.getElementById('nt-t')||{}).value||'',bb=(document.getElementById('nt-b')||{}).value||'',ll=(document.getElementById('nt-l')||{}).value||'';
+    if(!tt.trim()){flash('Write a title first.','err');return}
+    uApi('admin_notify_create',{p_title:tt.trim(),p_body:bb.trim(),p_link:ll.trim()}).then(function(){flash('Sent. Users see it in their bell.');loadNotify()},function(er){flash(/Bad link/.test(er.message||'')?'The link must be a page name like points, or start with https://':(er.message||'Failed.'),'err')});return}
+  if(a==='nt-del'){if(!confirm('Delete this update for everyone?'))return;uApi('admin_notify_delete',{p_id:+t.dataset.id}).then(function(){flash('Deleted.');loadNotify()},function(er){flash(er.message||'Failed.','err')});return}
   if(a==='pt-refresh'){loadPoints();return}
   if(a==='pt-block'||a==='pt-blockbox'){var who=a==='pt-block'?t.dataset.who:(document.getElementById('pt-who')||{}).value,blk=t.dataset.b==='1',why=(document.getElementById('pt-why')||{}).value||'';
     if(!who||!who.trim()){flash('Type an email or user ID first.','err');return}
