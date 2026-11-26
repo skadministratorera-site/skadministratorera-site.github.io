@@ -413,3 +413,5 @@ html::-webkit-scrollbar,body::-webkit-scrollbar,.ad-nav::-webkit-scrollbar,.ad-s
 .pt-blk{display:flex;gap:.5rem;flex-wrap:wrap;margin:0 0 1rem}.pt-blk input{flex:1 1 180px}.pt-ex{width:64px;margin-right:.4rem}.chip.bad{background:rgba(163,24,42,.14);color:#a3182a}
 .nt-form{display:grid;gap:.8rem;max-width:620px}.nt-form textarea{width:100%;resize:vertical}
 .pt-hint{margin:0 0 1rem;font-size:.84rem;line-height:1.5}
+
+.o-lnk{display:flex;gap:.4rem;align-items:center;margin-bottom:.4rem}.o-url{min-width:180px;padding:.35rem .6rem;border-radius:8px;border:1px solid var(--line,#ccd);background:transparent;color:inherit;font:inherit;font-size:.8rem}
